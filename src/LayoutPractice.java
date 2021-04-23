@@ -1,87 +1,103 @@
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class LayoutPractice extends JFrame {
 
     JPanel buttonPanel;
+    JLabel buttonCounterLabel = new JLabel();
     FlowLayout flowLayout = new FlowLayout();
+    Color backgroundColor = Color.LIGHT_GRAY;
+    int numOfMouseClicks = 0;
+    Graphics g;
 
 
-    public LayoutPractice() {
-//        this.setVisible(true);
-//        this.setTitle("GUIPractice");
-//        this.setSize(500,500);
-//        JPanel panel = createDialogue();
-//        panel.setBackground(Color.LIGHT_GRAY);
-//        this.setContentPane(panel);
-//        Border padding = BorderFactory.createEmptyBorder(250,325,250,75);
-//        panel.setBorder(padding);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.pack();
-        this.setVisible(true);
-        this.setBackground(Color.LIGHT_GRAY);
-        this.addComponents(this.getContentPane());
-    }
 
     private JPanel createDialogue() {
         JButton button = new JButton("Fun Fact");
-        button.addMouseListener(new MouseListener() {
+        button.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(buttonPanel,
-                        "FUN FACT OF THE DAY:" +
-                        "Cats with more than 3 colors are always female" );
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
+                        "FUN FACT OF THE DAY: " +
+                                "Cats with more than 3 colors are always female" );
+                numOfMouseClicks++;
+                buttonCounterLabel.setText("Button Amount: " + numOfMouseClicks);
+                System.out.println(numOfMouseClicks);
             }
         });
         return createPanel(button);
-    }
-
-    private void addComponents(final Container pane) {
-        final JPanel jPanel = new JPanel();
-        jPanel.setLayout(flowLayout);
-        flowLayout.setAlignment(FlowLayout.CENTER);
-        jPanel.add(createDialogue());
-        pane.add(jPanel, BorderLayout.CENTER);
     }
 
     private JPanel createPanel(JButton showButton) {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.PAGE_AXIS));
         JPanel panel = new JPanel(new FlowLayout());
+        panel.setBackground(backgroundColor);
         panel.add(box,BorderLayout.PAGE_START);
         panel.add(showButton,BorderLayout.PAGE_END);
         return panel;
     }
 
-    public static void main(String[] args) {
-       new LayoutPractice();
+    @Override
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
+        g.setColor(Color.ORANGE);
+        g.fillOval(300,10,300,300);
+
     }
+
+    private void addComponents(Container pane) {
+        //makes the dialogue button
+        JPanel dialogue = new JPanel();
+        dialogue.setLayout(flowLayout);
+        flowLayout.setAlignment(FlowLayout.LEFT);
+        dialogue.add(createDialogue());
+        dialogue.setBackground(backgroundColor);
+
+        //makes the labelPanel
+        JPanel labelPanel = new JPanel();
+        labelPanel.setLayout(flowLayout);
+        labelPanel.add(buttonCounterLabel);
+        buttonCounterLabel.setText("Button Amount: 0");
+        labelPanel.setBackground(backgroundColor);
+
+
+        //Makes the picturePanel
+//        JPanel picturePanel = new JPanel();
+//        picturePanel.setLayout(new FlowLayout());
+//        picturePanel.setAlignmentX(FlowLayout.CENTER);
+
+//        JFrame frame = new JFrame();
+//        frame.add(new LayoutPractice());
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setLocationByPlatform(true);
+//        frame.pack();
+//        frame.setVisible(true);
+
+        //Adds the elements to one spot to put into the GUI
+        pane.add(dialogue, BorderLayout.CENTER);
+        pane.add(labelPanel, BorderLayout.WEST);
+    }
+
+    private  void createGUI() {
+        LayoutPractice frame = new LayoutPractice();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //Set up the content pane.
+        frame.addComponents(frame.getContentPane());
+        frame.setTitle("Layout Practice");
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
+
+    }
+
+    public static void main(String[] args) {
+        LayoutPractice layoutPractice = new LayoutPractice();
+        layoutPractice.createGUI();
+    }
+
 
 
 }
