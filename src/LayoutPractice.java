@@ -14,19 +14,19 @@ public class LayoutPractice extends JFrame {
 
 
     public LayoutPractice() {
-        this.setVisible(true);
-        this.setTitle("GUIPractice");
-        this.setSize(500,500);
-        JPanel panel = createDialogue();
-        panel.setBackground(Color.LIGHT_GRAY);
-        this.setContentPane(panel);
-        Border padding = BorderFactory.createEmptyBorder(250,325,250,75);
-        panel.setBorder(padding);
+//        this.setVisible(true);
+//        this.setTitle("GUIPractice");
+//        this.setSize(500,500);
+//        JPanel panel = createDialogue();
+//        panel.setBackground(Color.LIGHT_GRAY);
+//        this.setContentPane(panel);
+//        Border padding = BorderFactory.createEmptyBorder(250,325,250,75);
+//        panel.setBorder(padding);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.pack();
         this.setVisible(true);
         this.setBackground(Color.LIGHT_GRAY);
-
+        this.addComponents(this.getContentPane());
     }
 
     private JPanel createDialogue() {
@@ -62,12 +62,18 @@ public class LayoutPractice extends JFrame {
         return createPanel(button);
     }
 
-
+    private void addComponents(final Container pane) {
+        final JPanel jPanel = new JPanel();
+        jPanel.setLayout(flowLayout);
+        flowLayout.setAlignment(FlowLayout.CENTER);
+        jPanel.add(createDialogue());
+        pane.add(jPanel, BorderLayout.CENTER);
+    }
 
     private JPanel createPanel(JButton showButton) {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.PAGE_AXIS));
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new FlowLayout());
         panel.add(box,BorderLayout.PAGE_START);
         panel.add(showButton,BorderLayout.PAGE_END);
         return panel;
